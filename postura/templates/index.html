@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Monitoreo de Postura</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        h2, h3 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        .card { background: #f4f4f4; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .menu { display: flex; justify-content: space-around; background: #333; padding: 10px; }
+        .menu a { color: white; text-decoration: none; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="#">Inicio</a>
+        <a href="#">Postura</a>
+        <a href="#">Configuración</a>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+
+    </div>
+
+    <div class="container">
+        <h3>Último Registro de Postura</h3>
+        {% if ultimo_dato %}
+            <div class="card">
+                <strong>Estado:</strong> {{ ultimo_dato.estado_postura }}<br>
+                <strong>Nivel de respaldo:</strong> {{ ultimo_dato.nivel_respaldo }}<br>
+                <strong>Fecha:</strong> {{ ultimo_dato.fecha }}
+            </div>
+        {% else %}
+            <p>No hay registros disponibles.</p>
+        {% endif %}
+
+        <h3>Historial de Cambios de Postura</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Postura Anterior</th>
+                    <th>Postura Actual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cambio in historico %}
+                    <tr>
+                        <td>{{ cambio.timestamp }}</td>
+                        <td>{{ cambio.postura_anterior }}</td>
+                        <td>{{ cambio.postura_actual }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">No hay historial disponible.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Alertas Recientes dfdfdfdf</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Alerta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alerta in alertas %}
+                    <tr>
+                        <td>{{ alerta.timestamp }}</td>
+                        <td>{{ alerta.nombre }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No hay alertas registradas.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
